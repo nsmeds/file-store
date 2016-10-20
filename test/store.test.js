@@ -26,10 +26,21 @@ describe('saving object', () => {
     breed: 'boxer',
     age: '9'
   };
+  var cat = {
+    name: 'whiskers',
+    breed: 'sphinx',
+    age: '100'
+  };
   it('creates a file for the object', done => {
     store.save(dog, () => {
       assert.ok(fs.existsSync('./store/blazer.json'));
       done();
     });
-  })
-})
+  });
+  it('retrieves an existing file', done => {
+    store.get(dog.name, (resource) => {
+      assert.deepEqual(resource, dog);
+      done();
+    });
+  });
+});
