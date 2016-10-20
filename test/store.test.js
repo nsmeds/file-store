@@ -6,9 +6,18 @@ var fs = require('fs');
 
 
 describe('makeDir method', () => {
+
+  it('deletes an existing directory', done => {
+    storeDir.deleteDir(function() {
+      assert.equal(fs.existsSync('./store'), false);
+      done();
+    });
+  });
+
   it('creates a new directory', done => {
-    storeDir.makeDir();
-    assert.ok(fs.existsSync('./store'));
-    done();
+    storeDir.makeDir(function() {
+      assert.ok(fs.existsSync('./store'));
+      done();
+    });
   });
 });
