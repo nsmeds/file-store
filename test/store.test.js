@@ -4,9 +4,7 @@ var storeDir = require('../lib/storeDirectory');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
 
-
 describe('makeDir method', () => {
-
   it('deletes an existing directory', done => {
     storeDir.deleteDir(function() {
       assert.equal(fs.existsSync('./store'), false);
@@ -21,3 +19,17 @@ describe('makeDir method', () => {
     });
   });
 });
+
+describe('saving object', () => {
+  var dog = {
+    name: 'blazer',
+    breed: 'boxer',
+    age: '9'
+  };
+  it('creates a file for the object', done => {
+    store.save(dog, () => {
+      assert.ok(fs.existsSync('./store/blazer.json'));
+      done();
+    });
+  })
+})
