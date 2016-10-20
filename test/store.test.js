@@ -65,7 +65,7 @@ describe('saving object', () => {
       done();
     });
   });
-  
+
   it('saves and retrieves all objects in correct order', done => {
     storeDir.deleteDir(function() {
       storeDir.makeDir(function() {
@@ -74,7 +74,10 @@ describe('saving object', () => {
             if(store.ids.length === allObjects.length) {
               store.retrieveAll(store.ids, function() {
                 console.log('all resources', store.allResources);
-                console.log('sorted ids', store.ids);
+                var nameArray = store.allResources.map(function(obj) {
+                  return obj.name;
+                });
+                assert.deepEqual(nameArray, store.ids);
                 done();
               });
             }
