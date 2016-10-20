@@ -31,6 +31,27 @@ describe('saving object', () => {
     breed: 'sphinx',
     age: '100'
   };
+
+  var bird = {
+    name: 'captain',
+    breed: 'parrot',
+    age: '86'
+  };
+
+  var rabbit = {
+    name: 'fluffy',
+    breed: 'lop',
+    age: '2'
+  };
+
+  var aardvark = {
+    name: 'arthur',
+    weight: '45lbs',
+    color: 'tan'
+  };
+
+  var allObjects = [dog, cat, bird, rabbit, aardvark];
+
   it('creates a file for the object', done => {
     store.save(dog, () => {
       assert.ok(fs.existsSync('./store/blazer.json'));
@@ -41,6 +62,24 @@ describe('saving object', () => {
     store.get(dog.name, (resource) => {
       assert.deepEqual(resource, dog);
       done();
+    });
+  });
+  it('saves and retrieves all objects in correct order', done => {
+    storeDir.deleteDir(function() {
+      storeDir.makeDir(function() {
+        allObjects.forEach(function(obj) {
+          store.save(obj, function() {
+            if(store.ids.length === allObjects.length) {
+              store.ids.sort();
+              console.log('sorted ids', store.ids);
+              store.retrieveAll(store.ids, function() {
+                console.log(store.allResources);
+              });
+              done();
+            }
+          });
+        });
+      });
     });
   });
 });
