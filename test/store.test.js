@@ -58,24 +58,25 @@ describe('saving object', () => {
       done();
     });
   });
+
   it('retrieves an existing file', done => {
     store.get(dog.name, (resource) => {
       assert.deepEqual(resource, dog);
       done();
     });
   });
+  
   it('saves and retrieves all objects in correct order', done => {
     storeDir.deleteDir(function() {
       storeDir.makeDir(function() {
         allObjects.forEach(function(obj) {
           store.save(obj, function() {
             if(store.ids.length === allObjects.length) {
-              store.ids.sort();
-              console.log('sorted ids', store.ids);
               store.retrieveAll(store.ids, function() {
-                console.log(store.allResources);
+                console.log('all resources', store.allResources);
+                console.log('sorted ids', store.ids);
+                done();
               });
-              done();
             }
           });
         });
