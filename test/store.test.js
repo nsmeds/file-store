@@ -50,23 +50,18 @@ describe('saving object', () => {
   });
 
   moreObjects.forEach(obj => {
-    store.save(obj, () => {
-      // console.log('We loaded a file for ' + obj.name);
-    });
+    store.save(obj, () => {});
   });
 
   it('retrieves all resources', done => {
-    const retrieved = [];
-    store.retrieveAll( (resource) => {
-      retrieved.push(resource.name);
-      if (retrieved.length === moreObjects.length + 1) {
-        // console.log(retrieved.toString());
-        assert.equal(retrieved.toString(), 'arthur,blazer,captain,fluffy,whiskers');
-      }
+    store.retrieveAll(resources => {
+      console.log(typeof resources);
+      var names = resources.map((obj) => obj.name);
+      // console.log(names);
+      assert.equal(names, 'arthur,blazer,captain,fluffy,whiskers');
+      done();
     });
-    done();
   });
-
 
   after(done => {
     storeDir.deleteDir(err => {
