@@ -49,15 +49,24 @@ describe('saving object', () => {
     });
   });
 
+  it('correctly handles bad get requests', done => {
+    store.get('badname', err => {
+      if (err.code) {
+        assert.ok(err);
+        done();
+      } else {
+        assert.equal(1,0);
+      }
+    });
+  });
+
   moreObjects.forEach(obj => {
     store.save(obj, () => {});
   });
 
   it('retrieves all resources', done => {
     store.retrieveAll(resources => {
-      console.log(typeof resources);
       var names = resources.map((obj) => obj.name);
-      // console.log(names);
       assert.equal(names, 'arthur,blazer,captain,fluffy,whiskers');
       done();
     });
