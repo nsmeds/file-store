@@ -51,30 +51,21 @@ describe('saving object', () => {
 
   moreObjects.forEach(obj => {
     store.save(obj, () => {
-      console.log('We loaded a file for ' + obj.name);
+      // console.log('We loaded a file for ' + obj.name);
     });
   });
 
-  // it('saves and retrieves all objects in correct order', done => {
-  //   storeDir.deleteDir(function() {
-  //     storeDir.makeDir(function() {
-  //       allObjects.forEach(function(obj) {
-  //         store.save(obj, function() {
-  //           if(store.ids.length === allObjects.length) {
-  //             store.retrieveAll(store.ids, function() {
-  //               console.log('all resources', store.allResources);
-  //               var nameArray = store.allResources.map(function(obj) {
-  //                 return obj.name;
-  //               });
-  //               assert.deepEqual(nameArray, store.ids);
-  //               done();
-  //             });
-  //           }
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
+  it('retrieves all resources', done => {
+    const retrieved = [];
+    store.retrieveAll( (resource) => {
+      retrieved.push(resource.name);
+      if (retrieved.length === moreObjects.length + 1) {
+        // console.log(retrieved.toString());
+        assert.equal(retrieved.toString(), 'arthur,blazer,captain,fluffy,whiskers');
+      }
+    });
+    done();
+  });
 
 
   after(done => {
