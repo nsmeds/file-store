@@ -1,24 +1,7 @@
 var store = require('../lib/store');
 var assert = require('assert');
 var storeDir = require('../lib/storeDirectory');
-var mkdirp = require('mkdirp');
 var fs = require('fs');
-
-describe('makeDir method', () => {
-  it('deletes an existing directory', done => {
-    storeDir.deleteDir(function() {
-      assert.equal(fs.existsSync('./store'), false);
-      done();
-    });
-  });
-
-  it('creates a new directory', done => {
-    storeDir.makeDir(function() {
-      assert.ok(fs.existsSync('./store'));
-      done();
-    });
-  });
-});
 
 describe('saving object', () => {
   var dog = {
@@ -50,7 +33,7 @@ describe('saving object', () => {
     color: 'tan'
   };
 
-  var allObjects = [dog, cat, bird, rabbit, aardvark];
+  var moreObjects = [cat, bird, rabbit, aardvark];
 
   it('creates a file for the object', done => {
     store.save(dog, () => {
@@ -66,24 +49,38 @@ describe('saving object', () => {
     });
   });
 
-  it('saves and retrieves all objects in correct order', done => {
-    storeDir.deleteDir(function() {
-      storeDir.makeDir(function() {
-        allObjects.forEach(function(obj) {
-          store.save(obj, function() {
-            if(store.ids.length === allObjects.length) {
-              store.retrieveAll(store.ids, function() {
-                console.log('all resources', store.allResources);
-                var nameArray = store.allResources.map(function(obj) {
-                  return obj.name;
-                });
-                assert.deepEqual(nameArray, store.ids);
-                done();
-              });
-            }
-          });
-        });
-      });
+  moreObjects.forEach(obj => {
+    store.save(obj, () => {
+      console.log('We loaded a file for ' + obj.name);
+    });
+  });
+
+  // it('saves and retrieves all objects in correct order', done => {
+  //   storeDir.deleteDir(function() {
+  //     storeDir.makeDir(function() {
+  //       allObjects.forEach(function(obj) {
+  //         store.save(obj, function() {
+  //           if(store.ids.length === allObjects.length) {
+  //             store.retrieveAll(store.ids, function() {
+  //               console.log('all resources', store.allResources);
+  //               var nameArray = store.allResources.map(function(obj) {
+  //                 return obj.name;
+  //               });
+  //               assert.deepEqual(nameArray, store.ids);
+  //               done();
+  //             });
+  //           }
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+
+
+  after(done => {
+    storeDir.deleteDir(err => {
+      if(err) return done(err);
+      done();
     });
   });
 });
