@@ -2,7 +2,7 @@
   "name": "file-store",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/store.js",
   "scripts": {
     "pretest": "npm run lint",
     "test": "mocha",
