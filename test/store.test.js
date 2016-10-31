@@ -1,39 +1,39 @@
-var store = require('../lib/store');
-var assert = require('assert');
-var storeDir = require('../lib/storeDirectory');
-var fs = require('fs');
+const store = require('../lib/store');
+const assert = require('assert');
+const storeDir = require('../lib/storeDirectory');
+const fs = require('fs');
 
 describe('saving object', () => {
-  var dog = {
+  let dog = {
     name: 'blazer',
     breed: 'boxer',
     age: '9'
   };
-  var cat = {
+  let cat = {
     name: 'whiskers',
     breed: 'sphinx',
     age: '100'
   };
 
-  var bird = {
+  let bird = {
     name: 'captain',
     breed: 'parrot',
     age: '86'
   };
 
-  var rabbit = {
+  let rabbit = {
     name: 'fluffy',
     breed: 'lop',
     age: '2'
   };
 
-  var aardvark = {
+  let aardvark = {
     name: 'arthur',
     weight: '45lbs',
     color: 'tan'
   };
 
-  var moreObjects = [cat, bird, rabbit, aardvark];
+  const moreObjects = [cat, bird, rabbit, aardvark];
 
   it('creates a file for the object', done => {
     store.save(dog, () => {
@@ -66,7 +66,7 @@ describe('saving object', () => {
 
   it('retrieves all resources', done => {
     store.retrieveAll(resources => {
-      var names = resources.map((obj) => obj.name);
+      let names = resources.map((obj) => obj.name);
       assert.equal(names, 'arthur,blazer,captain,fluffy,whiskers');
       done();
     });
